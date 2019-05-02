@@ -1,0 +1,50 @@
+#Created by: Jevan Smith
+#Assignment: Project2 (CS 460)
+#Description: Program Designed for testing purposes
+
+print " "
+print "-Grammar test below: "
+print "10 > 6 + 2", "=", 10 > 6 + 2
+print "(10 > 6) + 2", "=", (10 > 6) + 2
+
+print " " #COMMENT TEST
+print "-String printing test: "
+course = "CS 460"
+print course, 'and, testing single quotes'
+
+print " "
+print "-Printing with comma test"
+a = 10
+b = 20 #COMMENT TEST
+print "a =", a, "b =", b, "and the sum of the two is", a + b
+
+print " "
+print "-If statement test"
+if "a" == "b":
+    print "print unsuccessful"
+else:
+    print "print successful"
+
+
+if 0.0==1:
+    print "print unsuccessful"
+
+
+if 0==1:
+    print "print unsuccessful"
+elif 1/1 == 0:
+    print "print unsuccessful"
+elif 7*1 == 7:
+    print "print successful"
+else:
+    print "print unsuccessful"
+
+print " "
+print "-For loop test below: "
+for i in range(5):
+    print "[i]:", i, "hello!"  #COMMENT TEST
+print " "
+for i in range(5, 0, -1):
+    print "[i]:", i, "hello!"  #COMMENT TEST
+
+
