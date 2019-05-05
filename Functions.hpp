@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <map>
 #include "TypeDescriptor.hpp"
 
 #ifndef EXPRINTER_FUNCTIONS_HPP
@@ -32,5 +33,21 @@ private:
     int _step = 1;
     int stringToInt(std::string value);
 };
+/*
+
+class Functions {
+public:
+    Functions();
+    ~Functions();
+
+    void addFunction(Function*);
+    bool isDefined(std::string fName);
+    Functions* findFunction(std::string fName);
+
+
+private:
+    std::map<std::string, Function*> functionsList;
+};
+ */
 
 #endif //EXPRINTER_FUNCTIONS_HPP

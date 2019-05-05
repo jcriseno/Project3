@@ -89,3 +89,25 @@ void range::setValues(TypeDescriptor typeDesc) {
 void range::next() {
     _start += _step;
 }
+/*
+
+Functions::Functions() {}
+Functions::~Functions() {}
+
+void Functions::addFunction(Function* function) {
+    functionsList[Function.fName()] = function;
+}
+
+bool Functions::isDefined(std::string fName) {
+    return functionsList[fName] != functionsList.end();
+}
+
+Function* Functions::findFunction(std::string fName){
+    if(! isDefined(fName) ){
+        std::cout << "Functions::findFunction " << fName << " had not been defined" << std::endl;
+        exit(1);
+    }
+    return functionsList.find(fName)->second;
+}
+
+*/

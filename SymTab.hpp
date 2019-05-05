@@ -19,6 +19,8 @@ public:
     bool isDefined(std::string vName);
     TypeDescriptor getValueFor(std::string vName);
 
+    
+
 private:
     std::map<std::string, TypeDescriptor> symTab;
 };

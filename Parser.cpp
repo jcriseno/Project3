@@ -74,6 +74,9 @@ Statement *Parser::statement() {
             tokenizer.ungetToken();
             return forStatement();
         }
+        else if(tok.getKeyword() == "def") {
+            //Handle functions here
+        }
     }
     else if(tok.isName()) {
         tokenizer.ungetToken();
@@ -86,6 +89,7 @@ Statement *Parser::statement() {
     //Should never be reached
     return nullptr;
 }
+
 
 IfStatement *Parser::ifStatement() {
 

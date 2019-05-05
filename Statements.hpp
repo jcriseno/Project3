@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include "ArithExpr.hpp"
 #include "SymTab.hpp"
@@ -124,5 +125,7 @@ private:
     Statements *_elseStatements;
     bool _isElseTrue;
 };
+
+
 
 #endif //EXPRINTER_STATEMENTS_HPP

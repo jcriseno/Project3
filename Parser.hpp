@@ -10,6 +10,7 @@
 #include "SymTab.hpp"
 #include "ArithExpr.hpp"
 #include "Statements.hpp"
+#include "Functions.hpp"
 
 #include<vector>
 #include<iostream>

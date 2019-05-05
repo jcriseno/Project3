@@ -363,6 +363,8 @@ Token Tokenizer::getToken() {
             token.symbolString(temp);
         else if (temp == "elif")
             token.symbolString(temp);
+        else if (temp == "def")
+            token.symbolString(temp);
         else
             token.setName( temp );
     }
