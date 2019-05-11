@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/Users/josephcriseno/Desktop/Project3/ArithExpr.cpp
+iostream
+-
+ArithExpr.hpp
+/Users/josephcriseno/Desktop/Project3/ArithExpr.hpp
+TypeDescriptor.hpp
+/Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp
+
 /Users/josephcriseno/Desktop/Project3/ArithExpr.hpp
 Token.hpp
 /Users/josephcriseno/Desktop/Project3/Token.hpp
@@ -13,6 +21,12 @@ SymTab.hpp
 /Users/josephcriseno/Desktop/Project3/SymTab.hpp
 TypeDescriptor.hpp
 /Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp
+
+/Users/josephcriseno/Desktop/Project3/Functions.cpp
+Functions.hpp
+/Users/josephcriseno/Desktop/Project3/Functions.hpp
+Statements.hpp
+/Users/josephcriseno/Desktop/Project3/Statements.hpp
 
 /Users/josephcriseno/Desktop/Project3/Functions.hpp
 iostream
@@ -39,6 +53,8 @@ Parser.hpp
 /Users/josephcriseno/Desktop/Project3/Parser.hpp
 Statements.hpp
 /Users/josephcriseno/Desktop/Project3/Statements.hpp
+SymTab.hpp
+/Users/josephcriseno/Desktop/Project3/SymTab.hpp
 
 /Users/josephcriseno/Desktop/Project3/Parser.hpp
 Token.hpp
@@ -60,6 +76,14 @@ iostream
 map
 -
 
+/Users/josephcriseno/Desktop/Project3/Statements.cpp
+Statements.hpp
+/Users/josephcriseno/Desktop/Project3/Statements.hpp
+TypeDescriptor.hpp
+/Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp
+Functions.hpp
+/Users/josephcriseno/Desktop/Project3/Functions.hpp
+
 /Users/josephcriseno/Desktop/Project3/Statements.hpp
 iostream
 -
@@ -71,11 +95,23 @@ ArithExpr.hpp
 /Users/josephcriseno/Desktop/Project3/ArithExpr.hpp
 SymTab.hpp
 /Users/josephcriseno/Desktop/Project3/SymTab.hpp
+Functions.hpp
+/Users/josephcriseno/Desktop/Project3/Functions.hpp
+
+/Users/josephcriseno/Desktop/Project3/SymTab.cpp
+iostream
+-
+stack
+-
+SymTab.hpp
+/Users/josephcriseno/Desktop/Project3/SymTab.hpp
 
 /Users/josephcriseno/Desktop/Project3/SymTab.hpp
 string
 -
 map
+-
+stack
 -
 TypeDescriptor.hpp
 /Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp

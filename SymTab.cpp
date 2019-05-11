@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <stack>
 #include "SymTab.hpp"
 
 
@@ -40,3 +41,17 @@ TypeDescriptor SymTab::getValueFor(std::string vName) {
     //std::cout << "SymTab::getValueFor: " << vName << " contains " << symTab.find(vName)->second << std::endl;
     return symTab.find(vName)->second;
 }
+
+void SymTab::openScope(SymTab) {
+    //getSymTabStack().push(SymTab);
+
+}
+
+
+/*
+void SymTab::addFunction(std::string fName, Function_def* function) {
+    //functionsList[Function.fName()] = function;
+    functionsList[fName] = function;
+}
+ */
+

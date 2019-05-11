@@ -23,6 +23,10 @@ void Statements::evaluate(SymTab &symTab) {
         s->evaluate(symTab);
 }
 
+const std::vector<Statement *> &Statements::get_statements() const {
+    return _statements;
+}
+
 // AssignmentStatement
 AssignmentStatement::AssignmentStatement() : _lhsVariable{""}, _rhsExpression{nullptr} {}
 
@@ -64,6 +68,8 @@ void AssignmentStatement::print2() {
     std::cout << _lhsVariable << " = ";
     _rhsExpression->print();
 }
+
+
 
 
 // PrintStatement
@@ -225,4 +231,63 @@ void IfStatement::print() {
         elseStatements()->print();
     }
 }
+
+// Function def
+Function_def::Function_def() : _fName{""}, _Expr1{nullptr}, _parameter_list{nullptr}, _state{nullptr}, _statements{nullptr} {}
+
+Function_def::Function_def(ExprNode *Expr1, std::vector<ExprNode *> *parameter_list, Statements *state) :
+    _Expr1{Expr1}, _parameter_list{parameter_list}, _state{state} {}
+
+Function_def::Function_def(ExprNode *Expr1, std::vector<ExprNode *> *parameter_list, std::vector<Statement *> statements) :
+    _Expr1{Expr1}, _parameter_list{parameter_list}, _statements{statements} {}
+
+Function_def::Function_def(std::string fName, std::vector<ExprNode *> *parameter_list, Statements *state) :
+    _fName{fName}, _parameter_list{parameter_list}, _state{state} {}
+
+ExprNode *Function_def::get_Expr1() const {
+    return _Expr1;
+}
+
+Statements *Function_def::get_state() const {
+    return _state;
+}
+
+const std::vector<Statement *> &Function_def::get_statements() const {
+    return _statements;
+}
+
+std::vector<ExprNode *> *Function_def::get_parameter_list() const {
+    return _parameter_list;
+}
+
+void Function_def::addStatement(Statement *statement) {
+    _statements.push_back(statement);
+}
+
+
+void Function_def::evaluate(SymTab &symTab) {
+    /*
+    for (auto s: get_state()->get_statements()) {
+        s->evaluate(symTab);
+    }
+    symTab.addFunction(get_fName(), this);
+    */
+    //just run stmts evaluate
+    get_state()->evaluate(symTab);
+}
+
+void Function_def::print() {
+    return;
+}
+
+const std::string &Function_def::get_fName() const {
+    return _fName;
+}
+
+
+
+
+
+
+
 

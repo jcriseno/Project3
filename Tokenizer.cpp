@@ -345,6 +345,8 @@ Token Tokenizer::getToken() {
         temp = readName();
         if (temp == "for")
             token.setKeyword( temp );
+        else if (temp == "def")
+            token.symbolString(temp);
         else if (temp == "print")
             token.setKeyword( temp );
         else if (temp == "in")
@@ -362,8 +364,6 @@ Token Tokenizer::getToken() {
         else if (temp == "else")
             token.symbolString(temp);
         else if (temp == "elif")
-            token.symbolString(temp);
-        else if (temp == "def")
             token.symbolString(temp);
         else
             token.setName( temp );

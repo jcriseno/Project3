@@ -1,0 +1,4 @@
+def main():
+    print "This is inside def Main"
+
+print "finished entering function!"

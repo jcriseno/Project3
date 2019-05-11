@@ -8,8 +8,12 @@ CMakeFiles/ExprInter.dir/ArithExpr.cpp.o
  /Users/josephcriseno/Desktop/Project3/Token.hpp
  /Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp
 CMakeFiles/ExprInter.dir/Functions.cpp.o
+ /Users/josephcriseno/Desktop/Project3/ArithExpr.hpp
  /Users/josephcriseno/Desktop/Project3/Functions.cpp
  /Users/josephcriseno/Desktop/Project3/Functions.hpp
+ /Users/josephcriseno/Desktop/Project3/Statements.hpp
+ /Users/josephcriseno/Desktop/Project3/SymTab.hpp
+ /Users/josephcriseno/Desktop/Project3/Token.hpp
  /Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp
 CMakeFiles/ExprInter.dir/Parser.cpp.o
  /Users/josephcriseno/Desktop/Project3/ArithExpr.hpp

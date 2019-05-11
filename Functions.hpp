@@ -12,6 +12,9 @@
 #ifndef EXPRINTER_FUNCTIONS_HPP
 #define EXPRINTER_FUNCTIONS_HPP
 
+//For forward declaration
+//class Function_def;
+
 class range {
 public:
     int getStartValue();
@@ -33,21 +36,5 @@ private:
     int _step = 1;
     int stringToInt(std::string value);
 };
-/*
-
-class Functions {
-public:
-    Functions();
-    ~Functions();
-
-    void addFunction(Function*);
-    bool isDefined(std::string fName);
-    Functions* findFunction(std::string fName);
-
-
-private:
-    std::map<std::string, Function*> functionsList;
-};
- */
 
 #endif //EXPRINTER_FUNCTIONS_HPP

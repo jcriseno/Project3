@@ -8,10 +8,33 @@
 #include "Token.hpp"
 #include "Parser.hpp"
 #include "Statements.hpp"
+#include "SymTab.hpp"
 
 static bool firstRun = true; // Are we on the firstLine of the program? (true = yes, false = no)
 
 // Parser functions
+
+void FunctionList::addFunction(std::string fName, Function_def* function) {
+    //functionsList[Function.fName()] = function;
+    functionsList[fName] = function;
+}
+
+bool FunctionList::isDefined(std::string fName) {
+    return functionsList.find(fName) != functionsList.end();
+}
+
+Function_def* FunctionList::findFunction(std::string fName) {
+    if( ! isDefined(fName)) {
+        std::cout << "FunctionList::getValueFor: " << fName << " has not been defined.\n";
+        exit(1);
+    }
+    //std::cout << "SymTab::getValueFor: " << vName << " contains " << symTab.find(vName)->second << std::endl;
+    return functionsList.find(fName)->second;
+}
+
+const std::map<std::string, Function_def *> &FunctionList::getFunctionsList() const {
+    return functionsList;
+}
 
 void Parser::die(std::string where, std::string message, Token &token) {
     std::cout << where << " " << message << std::endl;
@@ -36,12 +59,12 @@ Statements *Parser::statements() {
     }
 
     while(tok.eol() || tok.isKeyword() || tok.isName() || tok.isIf() ||
-    tok.isElse() || tok.isElseIf() || tok.isName()) { // {NEWLINE | stmt}*
+    tok.isElse() || tok.isElseIf() || tok.isName() || tok.isDef()) { // {NEWLINE | stmt}*
         if(tok.eol() ) { // NEWLINE
             //DO NOTHING
         }
         else if (tok.isKeyword() || tok.isName() || tok.isIf() ||
-        tok.isElse() || tok.isElseIf()) { // stmt
+        tok.isElse() || tok.isElseIf() || tok.isDef())  { // stmt
             tokenizer.ungetToken();
             Statement *state = statement();
             value->addStatement(state);
@@ -65,6 +88,12 @@ Statement *Parser::statement() {
         tokenizer.ungetToken();
         return ifStatement();
     }
+    else if(tok.isDef()){
+        tokenizer.ungetToken();
+        // only call func def, dont return it
+        return func_def();
+        //func_def();
+    }
     else if (tok.isKeyword()) {
         if (tok.getKeyword() == "print") {
             tokenizer.ungetToken();
@@ -75,7 +104,10 @@ Statement *Parser::statement() {
             return forStatement();
         }
         else if(tok.getKeyword() == "def") {
-            //Handle functions here
+            tokenizer.ungetToken();
+            // only call func def, dont return it
+            func_def();
+            //func_def();
         }
     }
     else if(tok.isName()) {
@@ -88,6 +120,94 @@ Statement *Parser::statement() {
 
     //Should never be reached
     return nullptr;
+}
+
+Function_def *Parser::func_def() {
+    // func_def: ’def’ ID ’(’ [parameter_list] ’)’ ’:’ func_suite
+
+    // def
+    Token defToken = tokenizer.getToken();
+    if (!defToken.isDef()){
+        die("Parser::Function_def:"," Expected def token, instead got ", defToken);
+    }
+
+    // ID
+    //ExprNode *Expr1 = id();
+    Token funcNameToken = tokenizer.getToken();
+    if(!funcNameToken.isName()){
+        die("Parser::Function_def:"," Expected keyword, instead got ", funcNameToken);
+    }
+
+    // (
+    Token openParenToken = tokenizer.getToken();
+    if(!openParenToken.isOpenParen()){
+        die("Parser::Function_def:", " Expected OpenParenToken, instead got ", openParenToken);
+    }
+
+    // [parameter list]
+    //ExprNode *Expr2 = test();
+    std::vector<ExprNode*> *paramemter_list;
+
+    Token emptyParamTest = tokenizer.getToken();
+    if(emptyParamTest.isCloseParen()){
+        tokenizer.ungetToken();
+    }
+    else {
+        tokenizer.ungetToken();
+        ExprNode *paramID = id();
+        paramemter_list->push_back(paramID);
+        Token paramTok = tokenizer.getToken();
+        while (paramTok.isComma()) {
+            ExprNode *paramID = id();
+            paramemter_list->push_back(paramID);
+            Token paramTok = tokenizer.getToken();
+        }
+        tokenizer.ungetToken();
+    }
+    // )
+    Token closedParenToken = tokenizer.getToken();
+    if(!closedParenToken.isCloseParen()){
+        die("Parser::Function_def: ", "Expected ClosedParenToken, instead got ", closedParenToken);
+    }
+
+    // :
+    Token colonToken = tokenizer.getToken();
+    if(!colonToken.isColon()){
+        die("Parser::Function_def: ", "Expected colonToken, instead got ", colonToken);
+    }
+
+    // [NEWLINE]
+    Token newLineToken = tokenizer.getToken();
+    if(!newLineToken.eol()){
+        die("Parser::Function_def: ", "Expected newLineToken, instead got ", newLineToken);
+    }
+
+    // [INDENT]
+    Token indentToken = tokenizer.getToken();
+    if(!indentToken.isIndent()){
+        die("Parser::Function_def: ", "Expected indentToken, instead got ", indentToken);
+    }
+
+    // --code--
+    Statements *State = statements();
+
+    // [DEDENT]
+    Token dedentToken = tokenizer.getToken();
+    if(!dedentToken.isDedent()){
+        die("Parser::Function_def: ", "Expected dedentToken, instead got ", dedentToken);
+    }
+
+    //return new Function_def(Expr1, Expr2, State);
+    //return new Function_def(Expr1, paramemter_list, State);
+
+    // dont return it but just call add it to the functionList
+
+    Function_def *function =  new Function_def(funcNameToken.getName(), paramemter_list, State);
+    functionList.addFunction(funcNameToken.getName(), function);
+
+    return function;
+
+
 }
 
 

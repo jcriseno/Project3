@@ -16,6 +16,17 @@
 #include<iostream>
 #include<map>
 
+class FunctionList{
+public:
+    const std::map<std::string, Function_def *> &getFunctionsList() const;
+    void addFunction(std::string fName, Function_def* function);
+    bool isDefined(std::string fName);
+    Function_def* findFunction(std::string fName);
+
+private:
+    std::map<std::string, Function_def*> functionsList;
+};
+
 
 class Parser {
 public:
@@ -27,6 +38,7 @@ public:
     AssignmentStatement *assignStatement();
     PrintStatement *printStatement();
     IfStatement *ifStatement();
+    Function_def *func_def();
 
     ExprNode *test();
     ExprNode *or_test();
@@ -39,8 +51,11 @@ public:
     ExprNode *primary();
     ExprNode *id();
 
+
 private:
     Tokenizer &tokenizer;
+    FunctionList functionList;
+
 
     void die(std::string where, std::string message, Token &token);
 
