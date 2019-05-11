@@ -31,6 +31,9 @@ private:
     std::string readNumber();
     bool readIndent();
     bool readDedent();
+    void setSubscript(std::string value);
+    int getSubscript();
+    std::string _subscript;
 };
 
 #endif //EXPRINTER_TOKENIZER_HPP

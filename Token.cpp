@@ -6,7 +6,10 @@
 #include "Token.hpp"
 
 Token::Token(): _string{""}, _name{""}, _keyword{""}, _eof{false}, _eol{false},
-                _symbol{'\0'}, _isWholeNumber{false}, _isDecimalNumber{false},
+                _symbol{'\0'}, _isWholeNumber{false},
+		_isArray{false}, _isEmptyArray{false},
+                _isSubscript{false}, _isArrayLength{false},
+                _isPushStatement{false}, _isPopStatement{false},
                 _symbolString{""}, _indent{false},
                 _dedent{false}, _blank{false} {}
 
@@ -47,8 +50,11 @@ void Token::print() const {
     else if( isNotEqualTo() )                   std::cout << " != " ;
     else if( isNotEqualTo2 () )                 std::cout << " <> " ;
     else if( isFloorDivision() )                std::cout << " // " ;
-    else if( isOpenBracket() )                  std::cout << "{" ;
-    else if( isClosedBracket() )                std::cout << "}" ;
+    else if( isOpenBrace() )			std::cout << " { " ;
+    else if( isCloseBrace() )			std::cout << " } " ;
+    else if( isOpenBracket() )			std::cout << " [ ";
+    else if( isCloseBracket() )			std::cout << " ] ";
     else if( isKeyword() )                      std::cout << getKeyword() ;
+//    else if( isSubscript() )                    std::cout << _isSubscript;
     else                                        std::cout << "Uninitialized token.\n" ;
 }

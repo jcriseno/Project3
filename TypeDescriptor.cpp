@@ -37,6 +37,104 @@ bool TypeDescriptor::isEqual(int b) {
     return false;
 }
 
+char TypeDescriptor::getSubscript(int i) {
+    char subscript = _stringValue[i];
+    return subscript;
+}
+
+void TypeDescriptor::setIntArray(std::queue<int> a, int i) {
+    a.push(i);
+    iArray = a;
+    _intArray = true;
+}
+
+bool TypeDescriptor::isIntArray() {
+    return _intArray;
+}
+
+std::queue<int> TypeDescriptor::getIntArray() {
+    return iArray;
+}
+
+void TypeDescriptor::setDoubleArray(std::queue<double> a, double d) {
+    a.push(d);
+    dArray = a;
+    _doubleArray = true;
+}
+
+bool TypeDescriptor::isDoubleArray() {
+    return _doubleArray;
+}
+
+std::queue<double> TypeDescriptor::getDoubleArray() {
+    return dArray;
+}
+
+void TypeDescriptor::setStringArray(std::queue<std::string> a, std::string s) {
+    a.push(s);
+    sArray = a;
+    _stringArray = true;
+}
+
+bool TypeDescriptor::isStringArray() {
+    return _stringArray;
+}
+
+std::queue<std::string> TypeDescriptor::getStringArray() {
+    return sArray;
+}
+
+void TypeDescriptor::setBooleanArray(std::queue<bool> a, bool b) {
+    a.push(b);
+    bArray = a;
+    _boolArray = true;
+}
+
+bool TypeDescriptor::isBooleanArray() {
+    return _boolArray;
+}
+
+std::queue<bool> TypeDescriptor::getBooleanArray() {
+    return bArray;
+}
+
+void TypeDescriptor::setHeterogeneousArray() {
+    _heteroArray = true;
+    _intArray = false;
+    _doubleArray = false;
+    _stringArray = false;
+    _boolArray = false;
+}
+bool TypeDescriptor::isHeterogeneousArray() {
+    return _heteroArray;
+}
+
+int TypeDescriptor::ArrayType() {
+    if (_heteroArray)
+        return 4;
+    else if (_intArray)
+        return 0;
+    else if (_doubleArray)
+        return 1;
+    else if (_stringArray)
+        return 2;
+    else if (_boolArray)
+        return 3;
+    return -1;
+}
+
+void TypeDescriptor::setArrayType(int t) {
+    if (t == 0)
+        _intArray = true;
+    else if (t == 1)
+        _doubleArray = true;
+    else if (t == 2)
+        _stringArray = true;
+    else if (t == 3)
+        _boolArray = true;
+    else if (t == 4)
+        _heteroArray = true;
+}
 
 TypeDescriptor TypeDescriptor::keepTogether(TypeDescriptor a, TypeDescriptor b) {
     TypeDescriptor result;

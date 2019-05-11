@@ -8,6 +8,7 @@
 #include "Token.hpp"
 #include "SymTab.hpp"
 #include "TypeDescriptor.hpp"
+#include <queue>
 
 // Classes in this file define the internal representation of arithmetic expressions.
 
@@ -38,8 +39,11 @@ public:
     virtual void print();
     virtual TypeDescriptor evaluate(SymTab &symTab);
 
+    int arrayLength();
+
 private:
     ExprNode *_left, *_right;
+    int _arrLength;
 };
 
 // WholeNumber is a leaf-node in an expression tree. It corresponds to
