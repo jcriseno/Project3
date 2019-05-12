@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <stack>
+#include <vector>
 #include "TypeDescriptor.hpp"
 
 
@@ -30,16 +31,16 @@ public:
     */
 
 
-    void openScope(SymTab);
+    void openScope();
     void storeReturnValue(TypeDescriptor* returnValue);
     TypeDescriptor getReturnValue();
     void closeScope();
 
-    const std::stack<SymTab> &getSymTabStack() const;
 
 
 private:
-    std::map<std::string, TypeDescriptor> symTab;
+    //std::map<std::string, TypeDescriptor> symTab;
+    std::vector< std::map <std::string, TypeDescriptor> > symTab;
     //std::map<std::string, Function_def*> functionsList;
     //std::stack <SymTab> symTabStack;
 };

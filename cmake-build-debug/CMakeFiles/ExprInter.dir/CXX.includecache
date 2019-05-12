@@ -103,6 +103,8 @@ iostream
 -
 stack
 -
+map
+-
 SymTab.hpp
 /Users/josephcriseno/Desktop/Project3/SymTab.hpp
 
@@ -112,6 +114,8 @@ string
 map
 -
 stack
+-
+vector
 -
 TypeDescriptor.hpp
 /Users/josephcriseno/Desktop/Project3/TypeDescriptor.hpp

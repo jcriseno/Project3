@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <stack>
+#include <map>
 #include "SymTab.hpp"
 
 
@@ -12,25 +13,29 @@ void SymTab::setValueFor(std::string vName, TypeDescriptor value) {
 
     if(value.getTypeValue() == 0) { // Int
         //std::cout << "[DEBUG] "<< vName << " <- " << value.getIntValue() << std::endl;
-        symTab[vName] = value.getIntValue();
+        symTab.back()[vName] = value.getIntValue();
     }
     else if(value.getTypeValue() == 1) { // Double
         //std::cout << "[DEBUG] "<< vName << " <- " << value.getDoubleValue() << std::endl;
-        symTab[vName] = value.getDoubleValue();
+        symTab.back()[vName] = value.getDoubleValue();
     }
     else if(value.getTypeValue() == 2) { // String
         //std::cout << "[DEBUG] "<< vName << " <- " << value.getStringValue() << std::endl;
-        symTab[vName] = value.getStringValue();
+        symTab.back()[vName] = value.getStringValue();
     }
     else if(value.getTypeValue() == 3) { // Bool
         //std::cout << "[DEBUG] "<< vName << " <- " << value.getBoolValue() << std::endl;
-        symTab[vName] = value.getBoolValue();
+        symTab.back()[vName] = value.getBoolValue();
     }
 
 }
 
 bool SymTab::isDefined(std::string vName) {
-    return symTab.find(vName) != symTab.end();
+    if( symTab.back().find(vName) != symTab.back().end() )
+        return symTab.back().find(vName) != symTab.back().end();
+    else
+        return symTab[0].find(vName) != symTab[0].end();
+
 }
 
 TypeDescriptor SymTab::getValueFor(std::string vName) {
@@ -39,12 +44,16 @@ TypeDescriptor SymTab::getValueFor(std::string vName) {
         exit(1);
     }
     //std::cout << "SymTab::getValueFor: " << vName << " contains " << symTab.find(vName)->second << std::endl;
-    return symTab.find(vName)->second;
+    return symTab.back().find(vName)->second;
 }
 
-void SymTab::openScope(SymTab) {
-    //getSymTabStack().push(SymTab);
+void SymTab::openScope() {
+    std::map<std::string, TypeDescriptor> _symTab;
+    symTab.push_back(_symTab);
+}
 
+void SymTab::closeScope() {
+    symTab.pop_back();
 }
 
 

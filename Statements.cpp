@@ -273,7 +273,11 @@ void Function_def::evaluate(SymTab &symTab) {
     symTab.addFunction(get_fName(), this);
     */
     //just run stmts evaluate
+
+    // This stuff below is stuff you probably want to do in function call instead
+    symTab.openScope();
     get_state()->evaluate(symTab);
+    symTab.closeScope();
 }
 
 void Function_def::print() {

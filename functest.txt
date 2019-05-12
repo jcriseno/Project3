@@ -1,4 +1,9 @@
 def main():
     print "This is inside def Main"
+    a = 5
+    print "Main a is equal to = ", a
 
+
+b = 2
+print "Global b is equal to = ", b
 print "finished entering function!"
