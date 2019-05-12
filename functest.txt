@@ -1,9 +1,11 @@
-def main():
-    print "This is inside def Main"
-    a = 5
-    print "Main a is equal to = ", a
+print "about to enter the function!"
 
+def hello(a, b):
+    print a
 
 b = 2
+c = []
+d = [1, 2, 3]
+print d
 print "Global b is equal to = ", b
 print "finished entering function!"

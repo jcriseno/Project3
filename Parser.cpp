@@ -107,7 +107,7 @@ Statement *Parser::statement() {
         else if(tok.getKeyword() == "def") {
             tokenizer.ungetToken();
             // only call func def, dont return it
-            func_def();
+            return func_def();
             //func_def();
         }
     }
@@ -147,7 +147,8 @@ Function_def *Parser::func_def() {
 
     // [parameter list]
     //ExprNode *Expr2 = test();
-    std::vector<ExprNode*> *paramemter_list;
+    //std::vector<ExprNode*> *paramemter_list;
+    auto parameter_list = new std::vector<ExprNode*>;
 
     Token emptyParamTest = tokenizer.getToken();
     if(emptyParamTest.isCloseParen()){
@@ -156,12 +157,14 @@ Function_def *Parser::func_def() {
     else {
         tokenizer.ungetToken();
         ExprNode *paramID = id();
-        paramemter_list->push_back(paramID);
+        parameter_list->push_back(paramID);
         Token paramTok = tokenizer.getToken();
         while (paramTok.isComma()) {
             ExprNode *paramID = id();
-            paramemter_list->push_back(paramID);
+            parameter_list->push_back(paramID);
             Token paramTok = tokenizer.getToken();
+            if(paramTok.isCloseParen())
+                break;
         }
         tokenizer.ungetToken();
     }
@@ -203,7 +206,7 @@ Function_def *Parser::func_def() {
 
     // dont return it but just call add it to the functionList
 
-    Function_def *function =  new Function_def(funcNameToken.getName(), paramemter_list, State);
+    Function_def *function =  new Function_def(funcNameToken.getName(), parameter_list, State);
     functionList.addFunction(funcNameToken.getName(), function);
 
     return function;
@@ -625,7 +628,33 @@ ExprNode *Parser::primary() {
     else if( tok.isDecimalNumber() )
         return new DecimalNumber(tok);
     else if( tok.isName()) {
-        return new Variable(tok);
+        /*
+        if(tok.isOpenParen()){
+
+            auto parameter_list = new std::vector<ExprNode*>;
+            Token emptyParamTest = tokenizer.getToken();
+            if(emptyParamTest.isCloseParen()){
+                tokenizer.ungetToken();
+            }
+            else {
+                tokenizer.ungetToken();
+                ExprNode *paramID = id();
+                parameter_list->push_back(paramID);
+                Token paramTok = tokenizer.getToken();
+                while (paramTok.isComma()) {
+                    ExprNode *paramID = id();
+                    parameter_list->push_back(paramID);
+                    Token paramTok = tokenizer.getToken();
+                    if(paramTok.isCloseParen())
+                        break;
+                }
+                tokenizer.ungetToken();
+            }
+            return new Function_call(parameter_list);
+        }
+        else
+         */
+            return new Variable(tok);
     } else if( tok.isKeyword())
         return new Keyword(tok);
     else if( tok.isString())

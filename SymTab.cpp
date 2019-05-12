@@ -61,7 +61,7 @@ TypeDescriptor SymTab::getValueFor(std::string vName) {
         exit(1);
     }
 
-    TypeDescriptor value = symTab.find(vName)->second;
+    TypeDescriptor value = symTab.back().find(vName)->second;
     if (isArray(vName)) { // Is it an array?
         if (getArrayType(vName) == 4) { // Is it Homogeneous?
             std::cout << "SymTab::getValueFor: " << vName << " is a heterogeneous array.\n";
@@ -355,8 +355,7 @@ void SymTab::arrayPop(std::string vName, int type) {
     }
 }
 
-    return symTab.back().find(vName)->second;
-}
+
 
 void SymTab::openScope() {
     std::map<std::string, TypeDescriptor> _symTab;

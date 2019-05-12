@@ -63,7 +63,7 @@ public:
 
 private:
 
-    std::map<std::string, TypeDescriptor> symTab;
+
     std::map<std::string, int> arraySize;
     std::map<std::string, int> arrayType;
     std::map<std::string, std::queue<int>> intArray;

@@ -200,5 +200,17 @@ private:
 
 };
 
+class Function_call : public Statement{
+public:
+    Function_call();
+    Function_call(std::vector<ExprNode*> *args);
+
+    void evaluate(SymTab &symTab);
+    void print();
+
+private:
+
+};
+
 
 #endif //EXPRINTER_STATEMENTS_HPP
