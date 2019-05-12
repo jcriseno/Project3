@@ -7,9 +7,11 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 #include "ArithExpr.hpp"
 #include "SymTab.hpp"
+#include "Functions.hpp"
 
 // The Statement (abstract) class serves as a super class for all statements that
 // are defined in the language. Ultimately, statements have to be evaluated.
@@ -38,8 +40,10 @@ public:
 
     void print();
 
+    const std::vector<Statement *> &get_statements() const;
 private:
     std::vector<Statement *> _statements;
+
 };
 
 // AssignmentStatement represents the notion of an lValue having been assigned an rValue.
@@ -57,11 +61,13 @@ public:
     virtual void print();
     virtual void print2();
 
+
     void setArraySize(SymTab &symTab);
     bool isArray();
     bool isSubscript();
     int getSubscript();
     int arrayLength();
+
 
 private:
     std::string _lhsVariable;
@@ -134,6 +140,7 @@ private:
     bool _isElseTrue;
 };
 
+
 class PushStatement : public Statement {
 public:
     PushStatement();
@@ -159,4 +166,39 @@ public:
 private:
     std::string _lhsVariable;
 };
+
+class Function_def : public Statement {
+public:
+    Function_def();
+    Function_def(ExprNode *Expr1, std::vector<ExprNode*> *parameter_list, Statements *state);
+    Function_def(ExprNode *Expr1, std::vector<ExprNode*> *parameter_list, std::vector<Statement *> statements);
+    Function_def(std::string fName, std::vector<ExprNode*> *parameter_list, Statements *state);
+
+    const std::string &get_fName() const;
+
+    void evaluate(SymTab &symTab);
+    void print();
+
+    // getters
+    ExprNode *get_Expr1() const;
+    const std::vector<Statement *> &get_statements() const;
+    std::vector<ExprNode *> *get_parameter_list() const;
+    Statements *get_state() const;
+    void addStatement(Statement *statement);
+
+
+    //Forward declaration purposes
+    SymTab symTab;
+
+
+private:
+    std::string _fName;
+    ExprNode *_Expr1;
+    Statements *_state;
+    std::vector<Statement *> _statements;
+    std::vector<ExprNode*> *_parameter_list;
+
+};
+
+
 #endif //EXPRINTER_STATEMENTS_HPP

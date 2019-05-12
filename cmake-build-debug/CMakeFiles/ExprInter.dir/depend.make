@@ -7,11 +7,16 @@ CMakeFiles/ExprInter.dir/ArithExpr.cpp.o: ../SymTab.hpp
 CMakeFiles/ExprInter.dir/ArithExpr.cpp.o: ../Token.hpp
 CMakeFiles/ExprInter.dir/ArithExpr.cpp.o: ../TypeDescriptor.hpp
 
+CMakeFiles/ExprInter.dir/Functions.cpp.o: ../ArithExpr.hpp
 CMakeFiles/ExprInter.dir/Functions.cpp.o: ../Functions.cpp
 CMakeFiles/ExprInter.dir/Functions.cpp.o: ../Functions.hpp
+CMakeFiles/ExprInter.dir/Functions.cpp.o: ../Statements.hpp
+CMakeFiles/ExprInter.dir/Functions.cpp.o: ../SymTab.hpp
+CMakeFiles/ExprInter.dir/Functions.cpp.o: ../Token.hpp
 CMakeFiles/ExprInter.dir/Functions.cpp.o: ../TypeDescriptor.hpp
 
 CMakeFiles/ExprInter.dir/Parser.cpp.o: ../ArithExpr.hpp
+CMakeFiles/ExprInter.dir/Parser.cpp.o: ../Functions.hpp
 CMakeFiles/ExprInter.dir/Parser.cpp.o: ../Parser.cpp
 CMakeFiles/ExprInter.dir/Parser.cpp.o: ../Parser.hpp
 CMakeFiles/ExprInter.dir/Parser.cpp.o: ../Statements.hpp
@@ -43,6 +48,7 @@ CMakeFiles/ExprInter.dir/TypeDescriptor.cpp.o: ../TypeDescriptor.cpp
 CMakeFiles/ExprInter.dir/TypeDescriptor.cpp.o: ../TypeDescriptor.hpp
 
 CMakeFiles/ExprInter.dir/main.cpp.o: ../ArithExpr.hpp
+CMakeFiles/ExprInter.dir/main.cpp.o: ../Functions.hpp
 CMakeFiles/ExprInter.dir/main.cpp.o: ../Parser.hpp
 CMakeFiles/ExprInter.dir/main.cpp.o: ../Statements.hpp
 CMakeFiles/ExprInter.dir/main.cpp.o: ../SymTab.hpp

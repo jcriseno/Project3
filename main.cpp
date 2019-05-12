@@ -30,6 +30,9 @@ int main(int argc, char *argv[]) {
     Statements *statements = parser.statements();
     SymTab symTab;
 
+    //Initalizing the global scope for the symTab vector
+    symTab.openScope();
+
     /*std::cout << std::endl;
     std::cout << "--------------------------------" << std::endl;
     std::cout << "[MESSAGE] Starting print: " << std::endl;

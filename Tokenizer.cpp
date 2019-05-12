@@ -414,6 +414,8 @@ Token Tokenizer::getToken() {
 
         if (temp == "for")
             token.setKeyword( temp );
+        else if (temp == "def")
+            token.symbolString(temp);
         else if (temp == "print")
             token.setKeyword( temp );
         else if (temp == "in")

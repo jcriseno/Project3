@@ -47,4 +47,10 @@ print " "
 for i in range(5, 0, -1):
     print "[i]:", i, "hello!"  #COMMENT TEST
 
+print "about to encounter function"
+
+def main:
+    print "hello"
+
+print "finished encountering function"
 

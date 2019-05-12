@@ -3,6 +3,7 @@
 //
 
 #include "Functions.hpp"
+#include "Statements.hpp"
 
 range::range() {}
 range::~range() {}
@@ -89,3 +90,6 @@ void range::setValues(TypeDescriptor typeDesc) {
 void range::next() {
     _start += _step;
 }
+
+
+

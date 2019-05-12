@@ -19,6 +19,7 @@ void Token::print() const {
     else if( isIndent() )                       std::cout << " [INDENT] " ;
     else if( isDedent() )                       std::cout << " [DEDENT] " ;
     else if( isBlank() )                        std::cout << " [BLANK] " ;
+    else if( isDef() )                          std::cout << "def ";
     else if ( isIf() )                          std::cout << "if " ;
     else if ( isElse() )                        std::cout << "else ";
     else if ( isElseIf() )                      std::cout << "elif ";

@@ -10,10 +10,22 @@
 #include "SymTab.hpp"
 #include "ArithExpr.hpp"
 #include "Statements.hpp"
+#include "Functions.hpp"
 
 #include<vector>
 #include<iostream>
 #include<map>
+
+class FunctionList{
+public:
+    const std::map<std::string, Function_def *> &getFunctionsList() const;
+    void addFunction(std::string fName, Function_def* function);
+    bool isDefined(std::string fName);
+    Function_def* findFunction(std::string fName);
+
+private:
+    std::map<std::string, Function_def*> functionsList;
+};
 
 
 class Parser {
@@ -26,8 +38,12 @@ public:
     AssignmentStatement *assignStatement();
     PrintStatement *printStatement();
     IfStatement *ifStatement();
+
     PushStatement *pushStatement();
     PopStatement *popStatement();
+
+    Function_def *func_def();
+
 
     ExprNode *test();
     ExprNode *or_test();
@@ -40,11 +56,15 @@ public:
     ExprNode *primary();
     ExprNode *id();
 
+
     int arrayLength() {return _arrLength+1;}
     void resetLength() {_arrLength = 0;}
 
+
 private:
     Tokenizer &tokenizer;
+    FunctionList functionList;
+
 
     void die(std::string where, std::string message, Token &token);
 

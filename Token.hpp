@@ -46,6 +46,7 @@ public:
     bool isOr() const                     { return _symbolString == "or"; }
     bool isAnd() const                    { return _symbolString == "and"; }
     bool isNot() const                    { return _symbolString == "not"; }
+    bool isDef() const                    { return _symbolString == "def"; }
     bool isColon() const                  { return _symbol == ':'; }
     bool isComma() const                  { return _symbol == ','; }
     bool isQuotation() const              { return _symbol == '"'; }

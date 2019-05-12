@@ -6,10 +6,14 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <map>
 #include "TypeDescriptor.hpp"
 
 #ifndef EXPRINTER_FUNCTIONS_HPP
 #define EXPRINTER_FUNCTIONS_HPP
+
+//For forward declaration
+//class Function_def;
 
 class range {
 public:
