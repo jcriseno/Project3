@@ -2,6 +2,9 @@
 // Created by smith on 3/20/2019.
 //
 
+#include <vector>
+#include <map>
+
 #include "Statements.hpp"
 #include "TypeDescriptor.hpp"
 #include "Functions.hpp"
@@ -349,11 +352,11 @@ void Function_def::evaluate(SymTab &symTab) {
     //just run stmts evaluate
 
     // This stuff below is stuff you probably want to do in function call instead
-    /*
+
     symTab.openScope();
     get_state()->evaluate(symTab);
     symTab.closeScope();
-     */
+
 }
 
 void Function_def::print() {
@@ -363,6 +366,35 @@ void Function_def::print() {
 const std::string &Function_def::get_fName() const {
     return _fName;
 }
+
+/*
+Function_call::Function_call() : _fName{""}, _argv{nullptr}, _function{nullptr} {}
+
+Function_call::Function_call(std::string fName, std::vector<ExprNode*> *argv, Function_def *function) :
+    _fName{fName}, _argv{argv}, _function{function} {}
+
+void Function_call::evaluate(SymTab &symTab) {
+    std::map<std::string, TypeDescriptor> tempMap;
+    for (int i = 0; i < get_argv()->size(); i++) {
+    }
+
+    symTab.openScope();
+    symTab.passScope(tempMap);
+    //get_state()->evaluate(symTab);
+    get_function()->get_state()->evaluate(symTab);
+    symTab.closeScope();
+}
+
+const std::string &Function_call::get_fName() const {
+    return _fName;
+}
+std::vector<ExprNode *> *Function_call::get_argv() const {
+    return _argv;
+}
+Function_def *Function_call::get_function() const {
+    return _function;
+}
+*/
 
 
 

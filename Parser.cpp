@@ -112,8 +112,18 @@ Statement *Parser::statement() {
         }
     }
     else if(tok.isName()) {
-        tokenizer.ungetToken();
-        return assignStatement();
+        /*
+        Token testFunc = tokenizer.getToken();
+        if(!testFunc.isOpenParen()){
+            tokenizer.ungetToken();
+            tokenizer.ungetToken();
+            //return func_call();
+        }
+        else {
+         */
+            tokenizer.ungetToken();
+            return assignStatement();
+        //}
     }
     else {
         die("Parser::statement:", "Unexpected token, got", tok);
@@ -122,7 +132,48 @@ Statement *Parser::statement() {
     //Should never be reached
     return nullptr;
 }
+/*
+Function_call *Parser::func_call() {
 
+    Token funcNameToken = tokenizer.getToken();
+    if(!funcNameToken.isName()){
+        die("Parser::Function_call:"," Expected keyword, instead got ", funcNameToken);
+    }
+
+    if(!functionList.isDefined(funcNameToken.getName())){
+        die("Parser::Function_call:"," Function undefined", funcNameToken);
+    }
+
+    Function_def *function = functionList.findFunction(funcNameToken.getName());
+
+    auto parameter_list = new std::vector<ExprNode*>;
+    Token emptyParamTest = tokenizer.getToken();
+    if(emptyParamTest.isCloseParen()){
+        tokenizer.ungetToken();
+    }
+    else {
+        tokenizer.ungetToken();
+        ExprNode *paramID = id();
+        parameter_list->push_back(paramID);
+        Token paramTok = tokenizer.getToken();
+        while (paramTok.isComma()) {
+            ExprNode *paramID = id();
+            parameter_list->push_back(paramID);
+            Token paramTok = tokenizer.getToken();
+            if(paramTok.isCloseParen())
+                break;
+        }
+        tokenizer.ungetToken();
+    }
+
+    Token closedParenToken = tokenizer.getToken();
+    if(!closedParenToken.isCloseParen()){
+        die("Parser::Function_def: ", "Expected ClosedParenToken, instead got ", closedParenToken);
+    }
+
+    return new Function_call(funcNameToken.getName(), parameter_list, function);
+}
+*/
 Function_def *Parser::func_def() {
     // func_def: ’def’ ID ’(’ [parameter_list] ’)’ ’:’ func_suite
 
@@ -653,7 +704,7 @@ ExprNode *Parser::primary() {
             return new Function_call(parameter_list);
         }
         else
-         */
+        */
             return new Variable(tok);
     } else if( tok.isKeyword())
         return new Keyword(tok);

@@ -366,6 +366,14 @@ void SymTab::closeScope() {
     symTab.pop_back();
 }
 
+const std::vector<std::map<std::string, TypeDescriptor>> &SymTab::getSymTab() const {
+    return symTab;
+}
+
+void SymTab::passScope(std::map<std::string, TypeDescriptor> item) {
+    symTab.back() = item;
+}
+
 
 /*
 void SymTab::addFunction(std::string fName, Function_def* function) {

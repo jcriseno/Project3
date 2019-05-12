@@ -199,18 +199,26 @@ private:
     std::vector<ExprNode*> *_parameter_list;
 
 };
-
-class Function_call : public Statement{
+/*
+class Function_call : public Statement {
 public:
     Function_call();
-    Function_call(std::vector<ExprNode*> *args);
+    Function_call(std::string fName, std::vector<ExprNode*> *argv, Function_def *function);
 
     void evaluate(SymTab &symTab);
     void print();
 
+    const std::string &get_fName() const;
+
+    std::vector<ExprNode *> *get_argv() const;
+
+    Function_def *get_function() const;
+
 private:
-
+    std::string _fName;
+    std::vector<ExprNode*> *_argv;;
+    Function_def *_function;
 };
-
+*/
 
 #endif //EXPRINTER_STATEMENTS_HPP

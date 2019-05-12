@@ -1,7 +1,22 @@
 print "about to enter the function!"
 
+def main():
+    print "This is inside def Main"
+    a = 5
+    b = 4
+    if (a > b):
+        print "a is greater than in b in main!"
+    else:
+        print "b is greater than a in main!"
+    print "Main a is equal to = ", a
+    e = ["hello"]
+    print e
+
 def hello(a, b):
-    print a
+    print "Welcome to function hello"
+    a = [1, 2, 3, 4, 5]
+    for i in range(5):
+        print a[3]
 
 b = 2
 c = []

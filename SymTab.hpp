@@ -58,7 +58,9 @@ public:
     void storeReturnValue(TypeDescriptor* returnValue);
     TypeDescriptor getReturnValue();
     void closeScope();
+    void passScope(std::map<std::string, TypeDescriptor> item);
 
+    const std::vector<std::map<std::string, TypeDescriptor>> &getSymTab() const;
 
 
 private:
