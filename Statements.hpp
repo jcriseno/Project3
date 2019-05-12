@@ -52,7 +52,7 @@ private:
 class AssignmentStatement : public Statement {
 public:
     AssignmentStatement();
-    AssignmentStatement(std::string lhsVar, ExprNode *rhsExpr);
+    AssignmentStatement(std::string lhsVar, bool arr, int subscript, int arrLen, ExprNode *rhsExpr);
 
     std::string &lhsVariable();
     ExprNode *&rhsExpression();
@@ -62,9 +62,19 @@ public:
     virtual void print2();
 
 
+    void setArraySize(SymTab &symTab);
+    bool isArray();
+    bool isSubscript();
+    int getSubscript();
+    int arrayLength();
+
+
 private:
     std::string _lhsVariable;
     ExprNode *_rhsExpression;
+    bool _isArray;
+    int _subscript;
+    int _arrLength;
 };
 
 
@@ -130,6 +140,33 @@ private:
     bool _isElseTrue;
 };
 
+
+class PushStatement : public Statement {
+public:
+    PushStatement();
+    PushStatement(std::string lhsVar, ExprNode *rhsExpr);
+    std::string &lhsVariable();
+    ExprNode *&rhsExpression();
+    virtual void evaluate(SymTab &symTab);
+    virtual void print();
+
+private:
+    std::string _lhsVariable;
+    ExprNode *_rhsExpression;
+};
+
+class PopStatement : public Statement {
+public:
+    PopStatement();
+    PopStatement(std::string lhsVar);
+    std::string &lhsVariable();
+    virtual void evaluate(SymTab &symTab);
+    virtual void print();
+
+private:
+    std::string _lhsVariable;
+};
+
 class Function_def : public Statement {
 public:
     Function_def();
@@ -162,5 +199,6 @@ private:
     std::vector<ExprNode*> *_parameter_list;
 
 };
+
 
 #endif //EXPRINTER_STATEMENTS_HPP

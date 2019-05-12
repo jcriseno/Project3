@@ -19,7 +19,14 @@ public:
 
     bool isOpenParen() const              { return _symbol == '('; }
     bool isCloseParen() const             { return _symbol == ')'; }
-
+    bool isOpenBrace() const  		  { return _symbol == '{'; }
+    bool isCloseBrace() const  		  { return _symbol == '}'; }
+    bool isOpenBracket() const 		  { return _symbol == '['; }
+    bool isCloseBracket() const 	  { return _symbol == ']'; }
+    bool &isArray()                 	  { return _isArray; }
+    bool isArray() const                  { return _isArray; }
+    bool &isEmptyArray() 		  { return _isEmptyArray; }
+    bool isEmptyArray() const		  { return _isEmptyArray; }
     void symbol(char c)                   { _symbol = c; }
     char symbol()                         { return _symbol; }
 
@@ -59,8 +66,6 @@ public:
     bool isSubtractionOperator() const    { return _symbol == '-'; }
     bool isModuloOperator() const         { return _symbol == '%'; }
     bool isDivisionOperator() const       { return _symbol == '/'; }
-    bool isOpenBracket() const            { return _symbol == '{'; }
-    bool isClosedBracket() const          { return _symbol == '}'; }
 
     bool isKeyword() const                { return _keyword.length() > 0; }
     std::string getKeyword() const        { return _keyword; }
@@ -90,6 +95,22 @@ public:
         isDecimalNumber() = true;
     }
 
+    bool isSubscript()	const		  { return _isSubscript; }
+    void setSubscript(int n) {
+        _wholeNumber = n;
+        _isSubscript = true;
+    }
+    int getSubscript() const		  { return _wholeNumber; }
+
+    bool isArrayLength() const		  { return _isArrayLength; }
+    bool &isArrayLength()		  { return _isArrayLength; }
+
+    bool isPushStatement() const	  { return _isPushStatement; }
+    bool &isPushStatement()		  { return _isPushStatement; }
+
+    bool isPopStatement() const          { return _isPopStatement; }
+    bool &isPopStatement()	         { return _isPopStatement; }
+
     void print() const;
 
 private:
@@ -102,6 +123,12 @@ private:
     bool _blank;
     bool _isWholeNumber;
     bool _isDecimalNumber;
+    bool _isArray;
+    bool _isEmptyArray;
+    bool _isSubscript;
+    bool _isArrayLength;
+    bool _isPushStatement;
+    bool _isPopStatement;
     char _symbol;
     std::string _symbolString;
     int _wholeNumber;

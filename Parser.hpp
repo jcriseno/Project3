@@ -30,7 +30,7 @@ private:
 
 class Parser {
 public:
-    Parser(Tokenizer &tokenizer) : tokenizer{tokenizer} {}
+    Parser(Tokenizer &tokenizer) : tokenizer{tokenizer}, _arrLength{0} {}
 
     Statements *statements();
     Statement *statement();
@@ -38,7 +38,12 @@ public:
     AssignmentStatement *assignStatement();
     PrintStatement *printStatement();
     IfStatement *ifStatement();
+
+    PushStatement *pushStatement();
+    PopStatement *popStatement();
+
     Function_def *func_def();
+
 
     ExprNode *test();
     ExprNode *or_test();
@@ -52,12 +57,18 @@ public:
     ExprNode *id();
 
 
+    int arrayLength() {return _arrLength+1;}
+    void resetLength() {_arrLength = 0;}
+
+
 private:
     Tokenizer &tokenizer;
     FunctionList functionList;
 
 
     void die(std::string where, std::string message, Token &token);
+
+    int _arrLength;
 
 };
 

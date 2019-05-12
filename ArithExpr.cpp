@@ -12,7 +12,7 @@ ExprNode::ExprNode(Token token): _token{token} {}
 Token ExprNode::token() { return _token; }
 
 // InfixExprNode functions
-InfixExprNode::InfixExprNode(Token tk) : ExprNode{tk}, _left(nullptr), _right(nullptr) {}
+InfixExprNode::InfixExprNode(Token tk) : ExprNode{tk}, _left(nullptr), _right(nullptr), _arrLength{0} {}
 
 ExprNode *&InfixExprNode::left() { return _left; }
 
@@ -60,8 +60,73 @@ TypeDescriptor InfixExprNode::evaluate(SymTab &symTab) {
         return value1 || value2;
     else if ( token().isAnd() )
         return value1 && value2;
-    else if ( token().isComma())
-        return value1.keepTogether(value1, value2); // function inside TypeDescriptor class
+    else if ( token().isComma()) {
+
+
+        // This is where I'm getting a bug
+
+
+        _arrLength++;
+        TypeDescriptor value = value1.keepTogether(value1, value2);
+        if (value2.getTypeValue() == 0) { // Integer Array
+            if (value1.getTypeValue() == 0) {
+                std::queue<int> a;
+                value1.setIntArray(a, value1.getIntValue());
+                a = value1.getIntArray();
+                value.setIntArray(a, value2.getIntValue());
+            } else {
+                if (!value1.isIntArray()) {
+                    value.setHeterogeneousArray();
+                } else {
+                    std::queue<int> a = value1.getIntArray();
+                    value.setIntArray(a,value2.getIntValue());
+                }
+            }
+        } else if (value2.getTypeValue() == 1) { // Double Array
+            if (value1.getTypeValue() == 1) {
+                std::queue<double> a;
+                value1.setDoubleArray(a, value1.getDoubleValue());
+                a = value1.getDoubleArray();
+                value.setDoubleArray(a, value2.getDoubleValue());
+            } else {
+                if (!value1.isDoubleArray()) {
+                    value.setHeterogeneousArray();
+                } else {
+                    std::queue<double> a = value1.getDoubleArray();
+                    value.setDoubleArray(a, value2.getDoubleValue());
+                }
+            }
+        } else if (value2.getTypeValue() == 2) { // String Array
+            if (value1.getTypeValue() == 2) {
+                std::queue<std::string> a;
+                value.setStringArray(a, value1.getStringValue());
+                a = value1.getStringArray();
+                value.setStringArray(a, value2.getStringValue());
+            } else {
+                if (!value1.isStringArray()) {
+                    value.setHeterogeneousArray();
+                } else {
+                    std::queue<std::string> a = value1.getStringArray();
+                    value.setStringArray(a, value2.getStringValue());
+                }
+            }
+        } else if (value2.getTypeValue() == 3) { // Boolean Array
+            if (value1.getTypeValue() == 3) {
+                std::queue<bool> a;
+                value.setBooleanArray(a, value1.getBoolValue());
+                a = value1.getBooleanArray();
+                value.setBooleanArray(a, value2.getBoolValue());
+            } else {
+                if (!value1.isBooleanArray()) {
+                    value.setHeterogeneousArray();
+                } else {
+                    std::queue<bool> a = value1.getBooleanArray();
+                    value.setBooleanArray(a, value2.getBoolValue());
+                } 
+            }
+        }
+        return value; // function inside TypeDescriptor class
+    }
     else if ( token().isFloorDivision() )
         return value1.floorDivision(value1, value2);
     else {
@@ -76,6 +141,10 @@ void InfixExprNode::print() {
     _left->print();
     token().print();
     _right->print();
+}
+
+int InfixExprNode::arrayLength() {
+    return _arrLength;
 }
 
 // WholeNumber
@@ -119,7 +188,21 @@ TypeDescriptor Variable::evaluate(SymTab &symTab) {
         exit(1);
     }
     TypeDescriptor value;
-    value = symTab.getValueFor(token().getName());
+    if (token().isSubscript()) {
+        if (symTab.getArrayType(token().getName()) == 0)
+            value = symTab.getIntArrayIndex(token().getName(), token().getSubscript());
+        else if (symTab.getArrayType(token().getName()) == 1)
+            value = symTab.getDoubleArrayIndex(token().getName(), token().getSubscript());
+        else if (symTab.getArrayType(token().getName()) == 2)
+            value = symTab.getStringArrayIndex(token().getName(), token().getSubscript());
+        else if (symTab.getArrayType(token().getName()) == 3)
+            value = symTab.getBooleanArrayIndex(token().getName(), token().getSubscript());
+    }
+    else if( token().isArrayLength()) {
+        value = symTab.getArrayLength(token().getName());
+    }
+    else
+        value = symTab.getValueFor(token().getName());
     //std::cout << "Variable::evaluate: returning " << symTab.getValueFor(token().getName()) << std::endl;
     return value;
 }
@@ -151,7 +234,6 @@ void String::print() {
 }
 
 TypeDescriptor String::evaluate(SymTab &symTab) {
-
     TypeDescriptor value;
     value = token().getString();
     //std::cout << "Keyword::evaluate: returning " << symTab.getValueFor(token().getKeyword()) << std::endl;

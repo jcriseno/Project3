@@ -81,7 +81,8 @@ Statements *Parser::statements() {
 Statement *Parser::statement() {
 
     // This function parses the grammar rules:
-    // <statement> -> <if_stmt> | <for_stmt> | <print_stmt> | <assign_stmt>
+    // <statement> -> <if_stmt> | <for_stmt> | <print_stmt> | <assign_stmt> |
+    // <array>
 
     Token tok = tokenizer.getToken();
     if(tok.isIf()) {
@@ -357,21 +358,36 @@ ForStatement *Parser::forStatement() {
 }
 
 AssignmentStatement *Parser::assignStatement() {
-
     // This function parses the grammar rules:
     // <assign_stmt> -> 'id' ’=’ <or_test>
 
     Token varName = tokenizer.getToken();
     if (!varName.isName())
         die("Parser::assignStatement", "Expected a name token, instead got", varName);
-
+    int subscript = -1;
+    if( varName.isSubscript() )
+        subscript = varName.getSubscript();
     Token assignOp = tokenizer.getToken();
+
     if (!assignOp.isAssignmentOperator())
         die("Parser::assignStatement", "Expected an '=', instead got", assignOp);
+    bool arr = false;
+    ExprNode *rightHandSideExpr;
+    Token OpenBracket = tokenizer.getToken();
+    if (OpenBracket.isOpenBracket()) {
+        arr = true;
+        rightHandSideExpr = test();
+        Token CloseBracket = tokenizer.getToken();
+        if (!CloseBracket.isCloseBracket())
+            die("Parser::assignStatement", "Expected an ']', instead got", CloseBracket);
+    } else {
+        tokenizer.ungetToken();
+        rightHandSideExpr = or_test();
+    }
+    int aLen = arrayLength();
+    resetLength();
 
-    ExprNode *rightHandSideExpr = or_test();
-
-    return new AssignmentStatement(varName.getName(), rightHandSideExpr);
+    return new AssignmentStatement(varName.getName(), arr, subscript, aLen, rightHandSideExpr);
 }
 
 PrintStatement *Parser::printStatement() {
@@ -388,6 +404,30 @@ PrintStatement *Parser::printStatement() {
     return new PrintStatement(varKeyword.getKeyword(), rightHandSideExpr);
 }
 
+PushStatement *Parser::pushStatement() {
+    Token varName = tokenizer.getToken();
+    if (!varName.isName())
+        die("Parser::pushStatement()", "Expected a name token, instead got", varName);
+
+    Token varIsOpenParen = tokenizer.getToken();
+    if (!varIsOpenParen.isOpenParen())
+        die("Parser::pushStatement", "Expected a '(' token, instead got", varIsOpenParen);
+
+    ExprNode *rightHandSideExpr = test();
+
+    Token varIsClosedParen = tokenizer.getToken();
+    if (!varIsClosedParen.isCloseParen())
+        die("Parser::pushStatement", "Expected a ')' token, instead got", varIsClosedParen);
+    return new PushStatement(varName.getName(), test());
+}
+
+PopStatement *Parser::popStatement() {
+    Token varName = tokenizer.getToken();
+    if (!varName.isName())
+        die("Parser::popStatement()", "Expected a name token, instead got", varName);    
+    return new PopStatement(varName.getName());
+}
+
 ExprNode *Parser::test() {
 
     // This function parses the grammar rules:
@@ -396,6 +436,7 @@ ExprNode *Parser::test() {
     ExprNode *left = or_test();
     Token tok = tokenizer.getToken();
     while ( tok.isComma() ) {
+        _arrLength++;
         InfixExprNode *p = new InfixExprNode(tok);
         p->left() = left;
         p->right() = or_test();
@@ -566,21 +607,26 @@ ExprNode *Parser::id() {
 
 ExprNode *Parser::primary() {
     // This function parses the grammar rules:
-
     // <primary> -> [0-9]+
     // <primary> -> [0.0-inf+]+
     // <primary> -> [_a-zA-Z]+
     // <primary> -> (<expr>)
 
     Token tok = tokenizer.getToken();
-
     if (tok.isWholeNumber() )
         return new WholeNumber(tok);
+    else if (tok.isEmptyArray() ) {
+        _arrLength = -1;
+        tokenizer.ungetToken();
+        return new String(tok);
+    }
+    else if( tok.isArrayLength() )
+        return new Variable(tok);
     else if( tok.isDecimalNumber() )
         return new DecimalNumber(tok);
-    else if( tok.isName())
+    else if( tok.isName()) {
         return new Variable(tok);
-    else if( tok.isKeyword())
+    } else if( tok.isKeyword())
         return new Keyword(tok);
     else if( tok.isString())
         return new String(tok);

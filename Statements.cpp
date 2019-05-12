@@ -28,13 +28,20 @@ const std::vector<Statement *> &Statements::get_statements() const {
 }
 
 // AssignmentStatement
-AssignmentStatement::AssignmentStatement() : _lhsVariable{""}, _rhsExpression{nullptr} {}
+AssignmentStatement::AssignmentStatement() : _lhsVariable{""}, _isArray{false}, _subscript{0}, _arrLength{0}, _rhsExpression{nullptr} {}
 
-AssignmentStatement::AssignmentStatement(std::string lhsVar, ExprNode *rhsExpr):
-        _lhsVariable{lhsVar}, _rhsExpression{rhsExpr} {}
+AssignmentStatement::AssignmentStatement(std::string lhsVar, bool arr, int subscript, int arrLen, ExprNode *rhsExpr):
+        _lhsVariable{lhsVar}, _isArray{arr}, _subscript{subscript}, _arrLength{arrLen} ,_rhsExpression{rhsExpr} {}
 
 void AssignmentStatement::evaluate(SymTab &symTab) {
     TypeDescriptor rhs = rhsExpression()->evaluate(symTab);
+    if (isArray()) {
+        symTab.setArraySize(lhsVariable(),arrayLength());
+        symTab.setArrayType(lhsVariable(), rhs.ArrayType());
+    }
+    if (isSubscript()) {
+        symTab.setSubscript(lhsVariable(), getSubscript());
+    }
     symTab.setValueFor(lhsVariable(), rhs);
 }
 
@@ -69,6 +76,25 @@ void AssignmentStatement::print2() {
     _rhsExpression->print();
 }
 
+bool AssignmentStatement::isArray() {
+    return _isArray;
+}
+
+bool AssignmentStatement::isSubscript() {
+    return _subscript >= 0;
+}
+
+int AssignmentStatement::getSubscript() {
+    return _subscript;
+}
+
+void AssignmentStatement::setArraySize(SymTab &symTab) {
+    symTab.setArraySize(lhsVariable(),arrayLength());
+}
+
+int AssignmentStatement::arrayLength() {
+    return _arrLength;
+}
 
 
 
@@ -232,6 +258,54 @@ void IfStatement::print() {
     }
 }
 
+
+// PushStatement
+PushStatement::PushStatement() : _lhsVariable{""}, _rhsExpression{nullptr} {}
+
+PushStatement::PushStatement(std::string lhsVar, ExprNode *rhsExpr):
+        _lhsVariable{lhsVar}, _rhsExpression{rhsExpr} {}
+
+void PushStatement::evaluate(SymTab &symTab) {
+    TypeDescriptor rhs = rhsExpression()->evaluate(symTab);
+    symTab.arrayPush(lhsVariable(), rhs.getTypeValue(), rhs);
+}
+
+void PushStatement::print() {
+    std::cout << _lhsVariable << ".push(test)";
+    std::cout << std::endl;
+}
+
+std::string &PushStatement::lhsVariable() {
+    return _lhsVariable;
+}
+
+ExprNode *&PushStatement::rhsExpression() {
+    return _rhsExpression;
+}
+
+// PushStatement
+PopStatement::PopStatement() : _lhsVariable{""} {}
+
+PopStatement::PopStatement(std::string lhsVar):
+        _lhsVariable{lhsVar}{}
+
+void PopStatement::evaluate(SymTab &symTab) {
+    if (!symTab.isArray(lhsVariable())) {
+        std::cout << "PopStatement::evaluate " << lhsVariable() << " is not defined! " << std::endl;
+        exit(1);
+    }
+    symTab.arrayPop(lhsVariable(), symTab.getArrayType(lhsVariable()));
+}
+
+void PopStatement::print() {
+    std::cout << _lhsVariable << ".pop(test)";
+    std::cout << std::endl;
+}
+
+std::string &PopStatement::lhsVariable() {
+    return _lhsVariable;
+}
+
 // Function def
 Function_def::Function_def() : _fName{""}, _Expr1{nullptr}, _parameter_list{nullptr}, _state{nullptr}, _statements{nullptr} {}
 
@@ -287,6 +361,7 @@ void Function_def::print() {
 const std::string &Function_def::get_fName() const {
     return _fName;
 }
+
 
 
 

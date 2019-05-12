@@ -17,6 +17,11 @@ static int dedentCounter = 0;
 static bool skipNewline = false;
 static bool lockNextCharacter = false;
 static bool isDecimal = false;
+static bool isSubscript = false;
+static bool isArrayLength = false;
+static bool isPushStatement = false;
+static bool isPopStatement =false;
+
 
 std::string Tokenizer::readName() {
     // This function is called when it is known that
@@ -27,6 +32,39 @@ std::string Tokenizer::readName() {
     char c;
     while( inStream.get(c) && isalnum(c) ) {
         name += c;
+    }
+    if (name == "len") {
+        std::string lenName = readName();
+        isArrayLength = true;
+        inStream.get(c);
+        return lenName;
+    }
+
+// A weird bug I encountered here
+// comment the line below and see what happens
+std::cout << "" << std::endl;
+
+    if (c == '.') {
+        std::string statement = readName();
+        if (statement == "push") {
+            isPushStatement = true;
+        } else if (statement == "pop") {
+            isPopStatement = true;
+        }
+    }
+    else if (c == '[') {
+        char n;
+        inStream.get(n);
+        if (isdigit(n)) {
+            inStream.putback(n);
+            std::string value = readNumber();
+            inStream.get(c);
+            if (c == ']') {
+                setSubscript(value);
+                isSubscript = true;
+                inStream.get(c);
+            }
+        }
     }
     if(inStream.good())  // In the loop, we have read one char too many.
         inStream.putback(c);
@@ -338,11 +376,42 @@ Token Tokenizer::getToken() {
         token.symbol(c);
     else if( c == '{' || c == '}')
         token.symbol(c);
+    else if( c == '[' ) {
+        token.isArray() = true;
+        token.symbol(c);
+        inStream.get(c);
+        if( c == ']' )
+            token.isEmptyArray() = true;
+        inStream.putback(c);
+    }
+    else if( c == ']') {
+        token.symbol(c);
+        token.isArray() = true;
+        if (lastToken.isEmptyArray())
+            token.isEmptyArray() = true;
+    }
     else if(isalpha(c)) {  // an identifier?
         // put c back into the stream so we can read the entire name in a function.
         inStream.putback(c);
         std::string temp;
         temp = readName();
+        if (isSubscript) {
+            token.setSubscript(getSubscript());
+            isSubscript = false;
+        }
+        if (isArrayLength) {
+            token.isArrayLength() = true;
+            isArrayLength = false;
+        }
+        if (isPushStatement) {
+            token.isPushStatement() = true;
+            isPushStatement = false;
+        }
+        else if (isPopStatement) {
+            token.isPopStatement() = true;
+            isPopStatement = false;
+        }
+
         if (temp == "for")
             token.setKeyword( temp );
         else if (temp == "def")
@@ -389,4 +458,12 @@ void Tokenizer::printProcessedTokens() {
         if(iter->eol())
             std::cout << std::endl;
     }
+}
+
+void Tokenizer::setSubscript(std::string value) {
+    _subscript = value;
+}
+
+int Tokenizer::getSubscript() {
+    return stoi(_subscript);
 }
